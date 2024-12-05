@@ -119,12 +119,12 @@ resource "aws_cloudwatch_metric_alarm" "root_usage" {
 resource "aws_cloudwatch_log_metric_filter" "iam_changes" {
   count = var.iam_changes ? 1 : 0
 
-  name           = "IAMChanges"
+  name           = "IamPolicyChange"
   pattern        = "{($.eventName=DeleteGroupPolicy)||($.eventName=DeleteRolePolicy)||($.eventName=DeleteUserPolicy)||($.eventName=PutGroupPolicy)||($.eventName=PutRolePolicy)||($.eventName=PutUserPolicy)||($.eventName=CreatePolicy)||($.eventName=DeletePolicy)||($.eventName=CreatePolicyVersion)||($.eventName=DeletePolicyVersion)||($.eventName=AttachRolePolicy)||($.eventName=DetachRolePolicy)||($.eventName=AttachUserPolicy)||($.eventName=DetachUserPolicy)||($.eventName=AttachGroupPolicy)||($.eventName=DetachGroupPolicy)}"
   log_group_name = var.cloudtrail_log_group_name
 
   metric_transformation {
-    name      = "IAMChanges"
+    name      = "IamPolicyChange"
     namespace = var.alarm_namespace
     value     = "1"
   }
@@ -133,7 +133,7 @@ resource "aws_cloudwatch_log_metric_filter" "iam_changes" {
 resource "aws_cloudwatch_metric_alarm" "iam_changes" {
   count = var.iam_changes ? 1 : 0
 
-  alarm_name                = "${local.alarm_prefix}IAMChanges"
+  alarm_name                = "${local.alarm_prefix}IamPolicyChange"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "1"
   metric_name               = aws_cloudwatch_log_metric_filter.iam_changes[0].id
@@ -152,12 +152,12 @@ resource "aws_cloudwatch_metric_alarm" "iam_changes" {
 resource "aws_cloudwatch_log_metric_filter" "cloudtrail_cfg_changes" {
   count = var.cloudtrail_cfg_changes ? 1 : 0
 
-  name           = "CloudTrailCfgChanges"
+  name           = "CloudTrailConfigChange"
   pattern        = "{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }"
   log_group_name = var.cloudtrail_log_group_name
 
   metric_transformation {
-    name      = "CloudTrailCfgChanges"
+    name      = "CloudTrailConfigChange"
     namespace = var.alarm_namespace
     value     = "1"
   }
@@ -166,7 +166,7 @@ resource "aws_cloudwatch_log_metric_filter" "cloudtrail_cfg_changes" {
 resource "aws_cloudwatch_metric_alarm" "cloudtrail_cfg_changes" {
   count = var.cloudtrail_cfg_changes ? 1 : 0
 
-  alarm_name                = "${local.alarm_prefix}CloudTrailCfgChanges"
+  alarm_name                = "${local.alarm_prefix}CloudTrailConfigChange"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "1"
   metric_name               = aws_cloudwatch_log_metric_filter.cloudtrail_cfg_changes[0].id
@@ -185,12 +185,12 @@ resource "aws_cloudwatch_metric_alarm" "cloudtrail_cfg_changes" {
 resource "aws_cloudwatch_log_metric_filter" "console_signin_failures" {
   count = var.console_signin_failures ? 1 : 0
 
-  name           = "ConsoleSigninFailures"
+  name           = "SignInFailures"
   pattern        = "{ ($.eventName = ConsoleLogin) && ($.errorMessage = \"Failed authentication\") }"
   log_group_name = var.cloudtrail_log_group_name
 
   metric_transformation {
-    name      = "ConsoleSigninFailures"
+    name      = "SignInFailures"
     namespace = var.alarm_namespace
     value     = "1"
   }
@@ -199,7 +199,7 @@ resource "aws_cloudwatch_log_metric_filter" "console_signin_failures" {
 resource "aws_cloudwatch_metric_alarm" "console_signin_failures" {
   count = var.console_signin_failures ? 1 : 0
 
-  alarm_name                = "${local.alarm_prefix}ConsoleSigninFailures"
+  alarm_name                = "${local.alarm_prefix}SignInFailures"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "1"
   metric_name               = aws_cloudwatch_log_metric_filter.console_signin_failures[0].id
@@ -218,12 +218,12 @@ resource "aws_cloudwatch_metric_alarm" "console_signin_failures" {
 resource "aws_cloudwatch_log_metric_filter" "disable_or_delete_cmk" {
   count = var.disable_or_delete_cmk ? 1 : 0
 
-  name           = "DisableOrDeleteCMK"
+  name           = "CMKDisabledOrScheduledDeleted"
   pattern        = "{ ($.eventSource = kms.amazonaws.com) && (($.eventName = DisableKey) || ($.eventName = ScheduleKeyDeletion)) }"
   log_group_name = var.cloudtrail_log_group_name
 
   metric_transformation {
-    name      = "DisableOrDeleteCMK"
+    name      = "CMKDisabledOrScheduledDeleted"
     namespace = var.alarm_namespace
     value     = "1"
   }
@@ -232,7 +232,7 @@ resource "aws_cloudwatch_log_metric_filter" "disable_or_delete_cmk" {
 resource "aws_cloudwatch_metric_alarm" "disable_or_delete_cmk" {
   count = var.disable_or_delete_cmk ? 1 : 0
 
-  alarm_name                = "${local.alarm_prefix}DisableOrDeleteCMK"
+  alarm_name                = "${local.alarm_prefix}CMKDisabledOrScheduledDeleted"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "1"
   metric_name               = aws_cloudwatch_log_metric_filter.disable_or_delete_cmk[0].id
@@ -251,12 +251,12 @@ resource "aws_cloudwatch_metric_alarm" "disable_or_delete_cmk" {
 resource "aws_cloudwatch_log_metric_filter" "s3_bucket_policy_changes" {
   count = var.s3_bucket_policy_changes ? 1 : 0
 
-  name           = "S3BucketPolicyChanges"
+  name           = "S3BucketPolicyChange"
   pattern        = "{ ($.eventSource = s3.amazonaws.com) && (($.eventName = PutBucketAcl) || ($.eventName = PutBucketPolicy) || ($.eventName = PutBucketCors) || ($.eventName = PutBucketLifecycle) || ($.eventName = PutBucketReplication) || ($.eventName = DeleteBucketPolicy) || ($.eventName = DeleteBucketCors) || ($.eventName = DeleteBucketLifecycle) || ($.eventName = DeleteBucketReplication)) }"
   log_group_name = var.cloudtrail_log_group_name
 
   metric_transformation {
-    name      = "S3BucketPolicyChanges"
+    name      = "S3BucketPolicyChange"
     namespace = var.alarm_namespace
     value     = "1"
   }
@@ -265,7 +265,7 @@ resource "aws_cloudwatch_log_metric_filter" "s3_bucket_policy_changes" {
 resource "aws_cloudwatch_metric_alarm" "s3_bucket_policy_changes" {
   count = var.s3_bucket_policy_changes ? 1 : 0
 
-  alarm_name                = "${local.alarm_prefix}S3BucketPolicyChanges"
+  alarm_name                = "${local.alarm_prefix}S3BucketPolicyChange"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "1"
   metric_name               = aws_cloudwatch_log_metric_filter.s3_bucket_policy_changes[0].id
@@ -284,12 +284,12 @@ resource "aws_cloudwatch_metric_alarm" "s3_bucket_policy_changes" {
 resource "aws_cloudwatch_log_metric_filter" "aws_config_changes" {
   count = var.aws_config_changes ? 1 : 0
 
-  name           = "AWSConfigChanges"
+  name           = "AwsConfigConfigurationChange"
   pattern        = "{ ($.eventSource = config.amazonaws.com) && (($.eventName=StopConfigurationRecorder)||($.eventName=DeleteDeliveryChannel)||($.eventName=PutDeliveryChannel)||($.eventName=PutConfigurationRecorder)) }"
   log_group_name = var.cloudtrail_log_group_name
 
   metric_transformation {
-    name      = "AWSConfigChanges"
+    name      = "AwsConfigConfigurationChange"
     namespace = var.alarm_namespace
     value     = "1"
   }
@@ -298,7 +298,7 @@ resource "aws_cloudwatch_log_metric_filter" "aws_config_changes" {
 resource "aws_cloudwatch_metric_alarm" "aws_config_changes" {
   count = var.aws_config_changes ? 1 : 0
 
-  alarm_name                = "${local.alarm_prefix}AWSConfigChanges"
+  alarm_name                = "${local.alarm_prefix}AwsConfigConfigurationChange"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "1"
   metric_name               = aws_cloudwatch_log_metric_filter.aws_config_changes[0].id
@@ -383,12 +383,12 @@ resource "aws_cloudwatch_metric_alarm" "nacl_changes" {
 resource "aws_cloudwatch_log_metric_filter" "network_gw_changes" {
   count = var.network_gw_changes ? 1 : 0
 
-  name           = "NetworkGWChanges"
+  name           = "NetworkGatewayChange"
   pattern        = "{ ($.eventName = CreateCustomerGateway) || ($.eventName = DeleteCustomerGateway) || ($.eventName = AttachInternetGateway) || ($.eventName = CreateInternetGateway) || ($.eventName = DeleteInternetGateway) || ($.eventName = DetachInternetGateway) }"
   log_group_name = var.cloudtrail_log_group_name
 
   metric_transformation {
-    name      = "NetworkGWChanges"
+    name      = "NetworkGatewayChange"
     namespace = var.alarm_namespace
     value     = "1"
   }
@@ -397,7 +397,7 @@ resource "aws_cloudwatch_log_metric_filter" "network_gw_changes" {
 resource "aws_cloudwatch_metric_alarm" "network_gw_changes" {
   count = var.network_gw_changes ? 1 : 0
 
-  alarm_name                = "${local.alarm_prefix}NetworkGWChanges"
+  alarm_name                = "${local.alarm_prefix}NetworkGatewayChange"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "1"
   metric_name               = aws_cloudwatch_log_metric_filter.network_gw_changes[0].id
@@ -416,12 +416,12 @@ resource "aws_cloudwatch_metric_alarm" "network_gw_changes" {
 resource "aws_cloudwatch_log_metric_filter" "route_table_changes" {
   count = var.route_table_changes ? 1 : 0
 
-  name           = "RouteTableChanges"
+  name           = "RouteTableChange"
   pattern        = "{ ($.eventName = CreateRoute) || ($.eventName = CreateRouteTable) || ($.eventName = ReplaceRoute) || ($.eventName = ReplaceRouteTableAssociation) || ($.eventName = DeleteRouteTable) || ($.eventName = DeleteRoute) || ($.eventName = DisassociateRouteTable) }"
   log_group_name = var.cloudtrail_log_group_name
 
   metric_transformation {
-    name      = "RouteTableChanges"
+    name      = "RouteTableChange"
     namespace = var.alarm_namespace
     value     = "1"
   }
@@ -430,7 +430,7 @@ resource "aws_cloudwatch_log_metric_filter" "route_table_changes" {
 resource "aws_cloudwatch_metric_alarm" "route_table_changes" {
   count = var.route_table_changes ? 1 : 0
 
-  alarm_name                = "${local.alarm_prefix}RouteTableChanges"
+  alarm_name                = "${local.alarm_prefix}RouteTableChange"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "1"
   metric_name               = aws_cloudwatch_log_metric_filter.route_table_changes[0].id
@@ -449,12 +449,12 @@ resource "aws_cloudwatch_metric_alarm" "route_table_changes" {
 resource "aws_cloudwatch_log_metric_filter" "vpc_changes" {
   count = var.vpc_changes ? 1 : 0
 
-  name           = "VPCChanges"
+  name           = "VPCChange"
   pattern        = "{ ($.eventName = CreateVpc) || ($.eventName = DeleteVpc) || ($.eventName = ModifyVpcAttribute) || ($.eventName = AcceptVpcPeeringConnection) || ($.eventName = CreateVpcPeeringConnection) || ($.eventName = DeleteVpcPeeringConnection) || ($.eventName = RejectVpcPeeringConnection) || ($.eventName = AttachClassicLinkVpc) || ($.eventName = DetachClassicLinkVpc) || ($.eventName = DisableVpcClassicLink) || ($.eventName = EnableVpcClassicLink) }"
   log_group_name = var.cloudtrail_log_group_name
 
   metric_transformation {
-    name      = "VPCChanges"
+    name      = "VPCChange"
     namespace = var.alarm_namespace
     value     = "1"
   }
@@ -463,7 +463,7 @@ resource "aws_cloudwatch_log_metric_filter" "vpc_changes" {
 resource "aws_cloudwatch_metric_alarm" "vpc_changes" {
   count = var.vpc_changes ? 1 : 0
 
-  alarm_name                = "${local.alarm_prefix}VPCChanges"
+  alarm_name                = "${local.alarm_prefix}VPCChange"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "1"
   metric_name               = aws_cloudwatch_log_metric_filter.vpc_changes[0].id
