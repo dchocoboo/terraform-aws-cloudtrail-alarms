@@ -25,7 +25,7 @@ resource "aws_cloudwatch_metric_alarm" "unauthorized_api_calls" {
   evaluation_periods        = "1"
   metric_name               = aws_cloudwatch_log_metric_filter.unauthorized_api_calls[0].id
   namespace                 = var.alarm_namespace
-  period                    = "300"
+  period                    = "60"
   statistic                 = "Sum"
   threshold                 = "1"
   alarm_description         = "Monitoring unauthorized API calls will help reveal application errors and may reduce time to detect malicious activity."
