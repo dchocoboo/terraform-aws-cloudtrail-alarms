@@ -31,6 +31,12 @@ variable "disable_assumed_role_login_alerts" {
   default     = false
 }
 
+variable "enable_alarm_descriptions" {
+  description = "Toggle to enable/disable alarm descriptions"
+  type        = bool
+  default     = true
+}
+
 # Alarm Toggles
 
 variable "aws_config_changes" {
