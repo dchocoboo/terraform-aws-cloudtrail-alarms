@@ -12,9 +12,9 @@ variable "alarm_prefix" {
   default     = ""
 }
 
-variable "alarm_sns_topic_arn" {
-  description = "SNS topic ARN for generated alarms"
-  type        = string
+variable "alarm_actions" {
+  description = "List of ARNs to notify when alarm triggers (e.g. SNS topic or Lambda function)"
+  type        = list(string)
 }
 
 variable "cloudtrail_log_group_name" {
