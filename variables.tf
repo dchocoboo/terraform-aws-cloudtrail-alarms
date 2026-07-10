@@ -25,6 +25,12 @@ variable "cloudtrail_log_group_name" {
 
 # Behavior Toggles
 
+variable "create_alarms" {
+  description = "Toggle creation of CloudWatch alarms (metric filters are always created)"
+  type        = bool
+  default     = true
+}
+
 variable "disable_assumed_role_login_alerts" {
   description = "Toggle to disable assumed role console login alerts - violates CIS Benchmark"
   type        = bool

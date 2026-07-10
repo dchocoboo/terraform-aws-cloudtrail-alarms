@@ -18,7 +18,7 @@ resource "aws_cloudwatch_log_metric_filter" "unauthorized_api_calls" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "unauthorized_api_calls" {
-  count = var.unauthorized_api_calls ? 1 : 0
+  count = var.create_alarms && var.unauthorized_api_calls ? 1 : 0
 
   alarm_name                = "${local.alarm_prefix}UnauthorizedAPICalls"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
@@ -65,7 +65,7 @@ resource "aws_cloudwatch_log_metric_filter" "no_mfa_console_signin_no_assumed_ro
 }
 
 resource "aws_cloudwatch_metric_alarm" "no_mfa_console_signin" {
-  count = var.no_mfa_console_login ? 1 : 0
+  count = var.create_alarms && var.no_mfa_console_login ? 1 : 0
 
   alarm_name                = "${local.alarm_prefix}NoMFAConsoleSignin"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
@@ -98,7 +98,7 @@ resource "aws_cloudwatch_log_metric_filter" "root_usage" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "root_usage" {
-  count = var.root_usage ? 1 : 0
+  count = var.create_alarms && var.root_usage ? 1 : 0
 
   alarm_name                = "${local.alarm_prefix}RootUsage"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
@@ -131,7 +131,7 @@ resource "aws_cloudwatch_log_metric_filter" "iam_changes" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "iam_changes" {
-  count = var.iam_changes ? 1 : 0
+  count = var.create_alarms && var.iam_changes ? 1 : 0
 
   alarm_name                = "${local.alarm_prefix}IamPolicyChange"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
@@ -164,7 +164,7 @@ resource "aws_cloudwatch_log_metric_filter" "cloudtrail_cfg_changes" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cloudtrail_cfg_changes" {
-  count = var.cloudtrail_cfg_changes ? 1 : 0
+  count = var.create_alarms && var.cloudtrail_cfg_changes ? 1 : 0
 
   alarm_name                = "${local.alarm_prefix}CloudTrailConfigChange"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
@@ -197,7 +197,7 @@ resource "aws_cloudwatch_log_metric_filter" "console_signin_failures" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "console_signin_failures" {
-  count = var.console_signin_failures ? 1 : 0
+  count = var.create_alarms && var.console_signin_failures ? 1 : 0
 
   alarm_name                = "${local.alarm_prefix}SignInFailures"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
@@ -230,7 +230,7 @@ resource "aws_cloudwatch_log_metric_filter" "disable_or_delete_cmk" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "disable_or_delete_cmk" {
-  count = var.disable_or_delete_cmk ? 1 : 0
+  count = var.create_alarms && var.disable_or_delete_cmk ? 1 : 0
 
   alarm_name                = "${local.alarm_prefix}CMKDisabledOrScheduledDeleted"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
@@ -263,7 +263,7 @@ resource "aws_cloudwatch_log_metric_filter" "s3_bucket_policy_changes" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "s3_bucket_policy_changes" {
-  count = var.s3_bucket_policy_changes ? 1 : 0
+  count = var.create_alarms && var.s3_bucket_policy_changes ? 1 : 0
 
   alarm_name                = "${local.alarm_prefix}S3BucketPolicyChange"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
@@ -296,7 +296,7 @@ resource "aws_cloudwatch_log_metric_filter" "aws_config_changes" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "aws_config_changes" {
-  count = var.aws_config_changes ? 1 : 0
+  count = var.create_alarms && var.aws_config_changes ? 1 : 0
 
   alarm_name                = "${local.alarm_prefix}AwsConfigConfigurationChange"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
@@ -329,7 +329,7 @@ resource "aws_cloudwatch_log_metric_filter" "security_group_changes" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "security_group_changes" {
-  count = var.security_group_changes ? 1 : 0
+  count = var.create_alarms && var.security_group_changes ? 1 : 0
 
   alarm_name                = "${local.alarm_prefix}SecurityGroupChanges"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
@@ -362,7 +362,7 @@ resource "aws_cloudwatch_log_metric_filter" "nacl_changes" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "nacl_changes" {
-  count = var.nacl_changes ? 1 : 0
+  count = var.create_alarms && var.nacl_changes ? 1 : 0
 
   alarm_name                = "${local.alarm_prefix}NACLChanges"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
@@ -395,7 +395,7 @@ resource "aws_cloudwatch_log_metric_filter" "network_gw_changes" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "network_gw_changes" {
-  count = var.network_gw_changes ? 1 : 0
+  count = var.create_alarms && var.network_gw_changes ? 1 : 0
 
   alarm_name                = "${local.alarm_prefix}NetworkGatewayChange"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
@@ -428,7 +428,7 @@ resource "aws_cloudwatch_log_metric_filter" "route_table_changes" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "route_table_changes" {
-  count = var.route_table_changes ? 1 : 0
+  count = var.create_alarms && var.route_table_changes ? 1 : 0
 
   alarm_name                = "${local.alarm_prefix}RouteTableChange"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
@@ -461,7 +461,7 @@ resource "aws_cloudwatch_log_metric_filter" "vpc_changes" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "vpc_changes" {
-  count = var.vpc_changes ? 1 : 0
+  count = var.create_alarms && var.vpc_changes ? 1 : 0
 
   alarm_name                = "${local.alarm_prefix}VPCChange"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
