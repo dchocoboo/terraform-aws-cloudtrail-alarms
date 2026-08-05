@@ -12,9 +12,9 @@ variable "alarm_prefix" {
   default     = ""
 }
 
-variable "alarm_sns_topic_arn" {
-  description = "SNS topic ARN for generated alarms"
-  type        = string
+variable "alarm_actions" {
+  description = "List of ARNs to notify when alarm triggers (e.g. SNS topic or Lambda function)"
+  type        = list(string)
 }
 
 variable "cloudtrail_log_group_name" {
@@ -24,6 +24,12 @@ variable "cloudtrail_log_group_name" {
 }
 
 # Behavior Toggles
+
+variable "create_alarms" {
+  description = "Toggle creation of CloudWatch alarms (metric filters are always created)"
+  type        = bool
+  default     = true
+}
 
 variable "disable_assumed_role_login_alerts" {
   description = "Toggle to disable assumed role console login alerts - violates CIS Benchmark"
